@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ULovePDF Tools Showcase - Free Online PDF Tools</title>
+    <meta name="description" content="The complete suite of free online PDF tools. Merge, split, compress, convert, rotate, unlock and sign PDF files with ULovePDF. Easy to use, 100% free and secure.">
+    <meta name="keywords" content="pdf tools, free pdf editor, online pdf converter, merge pdf, compress pdf, word to pdf, edit pdf, sign pdf, ULovePDF">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e91e63;
+            --secondary: #ad1457;
+            --accent: #ff80ab;
+            --dark: #4a0036;
+            --light: #fff;
+            --bg-gradient: linear-gradient(135deg, #ffd1dc, #ffb6c1);
+            --bubble-bg: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 70%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --text-primary: #4a0036;
+            --text-secondary: #7e4353;
+            --border-color: rgba(233, 30, 99, 0.3);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --primary: #ff80ab;
+            --secondary: #f06292;
+            --accent: #e91e63;
+            --light: #2c001e;
+            --bg-gradient: linear-gradient(135deg, #2c001e, #5c0c3a);
+            --bubble-bg: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 70%);
+            --card-bg: rgba(74, 0, 54, 0.95);
+            --header-bg: rgba(44, 0, 30, 0.85);
+            --text-primary: #fff5f7;
+            --text-secondary: #ffc1d5;
+            --border-color: rgba(255, 128, 171, 0.3);
+            --shadow-color: rgba(255, 128, 171, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+        
+        #top-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links ul { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 600; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--primary); }
+        .theme-toggle { background: none; border: none; cursor: pointer; font-size: 1.3rem; color: var(--text-primary); }
+        .nav-toggle { display: none; }
+        
+        /* Dropdown for "All Tools" on Desktop */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            padding: 1.5rem;
+            margin-top: 10px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            z-index: 1001;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+        }
+        #tools-list-container {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem 1rem;
+            padding: 0;
+            margin: 0;
+        }
+        #tools-list-container li a {
+            display: block;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        #tools-list-container li a:hover {
+            background-color: var(--primary);
+            color: var(--light) !important;
+        }
+        
+        /* Mobile Navigation Styles */
+        @media (max-width: 992px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--header-bg); /* Use header background for mobile nav */
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: flex-start; /* Align content to the top */
+                align-items: center;
+                gap: 1rem; /* Reduced gap for mobile menu items */
+                transform: translateX(-100%);
+                transition: transform 0.4s ease-in-out;
+                padding-top: 60px; /* Space for toolbar */
+                overflow-y: auto; /* Enable scrolling if menu is long */
+            }
+            body.nav-open .nav-links {
+                transform: translateX(0);
+            }
+            .nav-links ul {
+                flex-direction: column;
+                gap: 1.5rem; /* More space between mobile menu items */
+                text-align: center;
+                width: 100%; /* Full width for menu items */
+            }
+            .nav-links li {
+                width: 100%;
+                padding: 0 20px; /* Padding for menu items */
+            }
+            .nav-links a {
+                font-size: 1.2rem; /* Slightly smaller font for mobile */
+                padding: 1rem 0;
+                display: block; /* Make links block for better touch target */
+                width: 100%;
+                text-align: center;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+                font-size: 1.8rem;
+                background: none;
+                border: none;
+                color: var(--text-primary);
+                cursor: pointer;
+                z-index: 1001;
+            }
+            /* Hide desktop dropdown menu on mobile */
+            .dropdown .dropdown-menu {
+                display: none !important;
+            }
+            /* Show the "All Tools" link in the mobile menu */
+            .nav-links li.mobile-all-tools {
+                display: block !important; /* Make sure it's visible */
+            }
+            /* Hide the desktop-only "All Tools" dropdown trigger */
+            .nav-links li.desktop-all-tools {
+                display: none;
+            }
+        }
+
+        .bubbles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+        .bubble { position: absolute; border-radius: 50%; background: var(--bubble-bg); animation: float 25s infinite ease-in-out; }
+        
+        @keyframes float {
+            0% { transform: translateY(110vh) scale(0.2); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        
+        .search-container { display: flex; justify-content: center; margin: 2rem auto; max-width: 600px; }
+        #search-bar { width: 100%; padding: 0.8rem 1.5rem; border-radius: 30px; font-size: 1rem; background: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border-color); }
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; margin-top: 1rem; }
+        
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            color: inherit;
+        }
+        .tool-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(233, 30, 99, 0.3); border-color: var(--accent); }
+        
+        .tool-header { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; background: rgba(173, 20, 87, 0.1); border-bottom: 1px solid var(--border-color); }
+        .tool-icon { width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0; }
+        .tool-name { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); }
+        .tool-desc { padding: 1.5rem; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary); flex-grow: 1; }
+        .tool-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255, 128, 171, 0.1); }
+        
+        .tool-btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 100%;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .category-title { font-size: 1.8rem; margin: 3rem 0 1.5rem; padding-bottom: 0.8rem; border-bottom: 2px solid var(--border-color); display: inline-block; color: var(--secondary); }
+
+        /* MODIFIED: Footer styling */
+        footer {
+            text-align: left; /* Changed for better article readability */
+            padding: 3rem 1rem 1rem 1rem;
+            margin-top: 3rem;
+            color: var(--text-secondary);
+            background: transparent;
+        }
+        .footer-content { max-width: 800px; margin: 0 auto; }
+        .footer-links { text-align: center; display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+        .footer-links a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        .social-links { text-align: center; display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+        .social-links a { color: var(--primary); font-size: 1.5rem; }
+        .footer-copyright { text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="bubbles" id="bubbles"></div>
+    
+    <header id="top-toolbar">
+        <a href="https://rozanatool.blogspot.com/p/home-ulove-pdf.html" class="logo">ULovePDF</a>
+        <nav class="nav-links" id="nav-menu">
+            <ul>
+                <!-- Desktop: Shows the dropdown menu for all tools -->
+                <li class="dropdown desktop-all-tools" id="tools-dropdown">
+                    <a href="#">All Tools <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                    <div class="dropdown-menu">
+                        <ul id="tools-list-container"></ul>
+                    </div>
+                </li>
+                <!-- Mobile: Shows a simple link to the tools section -->
+                <li class="mobile-all-tools" style="display: none;">
+                    <a href="#tools-container">All Tools</a>
+                </li>
+                <li><a href="#footer">About</a></li>
+                <li><a href="#footer">Privacy</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+        </nav>
+         <button id="darkModeToggle" class="theme-toggle" aria-label="toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="container">
+            <div class="search-container">
+                <input type="search" id="search-bar" placeholder="Search for any tool...">
+            </div>
+
+            <div id="tools-container">
+                <h2 class="category-title" id="organize-category">Organize & Optimize</h2>
+                <div class="tools-grid" id="organize-tools"></div>
+                
+                <h2 class="category-title" id="conversion-category">Conversion Tools</h2>
+                <div class="tools-grid" id="conversion-tools"></div>
+                
+                <h2 class="category-title" id="edit-category">Edit & Secure</h2>
+                <div class="tools-grid" id="edit-tools"></div>
+            </div>
+        </div>
+    </main>
+        
+    <footer id="footer">
+        <div class="footer-content">
+            <div class="footer-links" id="about-us">
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+            <p class="footer-copyright">© 2025 ULovePDF Tools Collection | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allTools = [
+                { name: "Merge PDF", id: "merge-pdf", url: "https://rozanatool.blogspot.com/p/merge-pdf.html", icon: "fas fa-compress-arrows-alt", color: "#e67e22", category: "organize-tools", desc: "Combine multiple PDF files into one single document." },
+                { name: "Split PDF", id: "split-pdf", url: "#", icon: "fas fa-expand-arrows-alt", color: "#e67e22", category: "organize-tools", desc: "Divide a large PDF into several smaller ones." },
+                { name: "Remove pages", id: "remove-pages", url: "#", icon: "fas fa-times-circle", color: "#e74c3c", category: "organize-tools", desc: "Delete one or more pages from your PDF file." },
+                { name: "Extract pages", id: "extract-pages", url: "#", icon: "fas fa-share-square", color: "#e67e22", category: "organize-tools", desc: "Create a new PDF from a selection of pages." },
+                { name: "Organize PDF", id: "organize-pdf", url: "#", icon: "fas fa-layer-group", color: "#e67e22", category: "organize-tools", desc: "Visually reorder, add, or delete PDF pages." },
+                { name: "Compress PDF", id: "compress-pdf", url: "#", icon: "fas fa-compress", color: "#2ecc71", category: "organize-tools", desc: "Reduce the file size of your PDF while optimizing quality." },
+                { name: "Repair PDF", id: "repair-pdf", url: "#", icon: "fas fa-wrench", color: "#2ecc71", category: "organize-tools", desc: "Attempt to fix and recover data from a corrupted PDF." },
+                { name: "OCR PDF", id: "ocr-pdf", url: "#", icon: "fas fa-eye", color: "#2ecc71", category: "organize-tools", desc: "Make scanned PDFs searchable and selectable." },
+                { name: "JPG to PDF", id: "jpg-to-pdf", url: "#", icon: "fas fa-file-image", color: "#f1c40f", category: "conversion-tools", desc: "Convert JPG images to PDF in seconds." },
+                { name: "WORD to PDF", id: "word-to-pdf", url: "https://rozanatool.blogspot.com/p/word-to-pdf.html", icon: "fas fa-file-word", color: "#3498db", category: "conversion-tools", desc: "Turn your Microsoft Word documents into PDF files." },
+                { name: "POWERPOINT to PDF", id: "ppt-to-pdf", url: "#", icon: "fas fa-file-powerpoint", color: "#e74c3c", category: "conversion-tools", desc: "Change Microsoft PowerPoint slides into PDFs." },
+                { name: "EXCEL to PDF", id: "excel-to-pdf", url: "#", icon: "fas fa-file-excel", color: "#27ae60", category: "conversion-tools", desc: "Transform Microsoft Excel sheets into PDF format." },
+                { name: "HTML to PDF", id: "html-to-pdf", url: "#", icon: "fas fa-code", color: "#f39c12", category: "conversion-tools", desc: "Convert any public webpage into a PDF document." },
+                { name: "PDF to JPG", id: "pdf-to-jpg", url: "#", icon: "fas fa-file-image", color: "#f1c40f", category: "conversion-tools", desc: "Extract every page from a PDF into JPG images." },
+                { name: "PDF to WORD", id: "pdf-to-word", url: "#", icon: "fas fa-file-word", color: "#3498db", category: "conversion-tools", desc: "Convert your PDF files to editable DOCX documents." },
+                { name: "PDF to POWERPOINT", id: "pdf-to-ppt", url: "#", icon: "fas fa-file-powerpoint", color: "#e74c3c", category: "conversion-tools", desc: "Turn your PDF files back into PPTX slideshows." },
+                { name: "PDF to EXCEL", id: "pdf-to-excel", url: "#", icon: "fas fa-file-excel", color: "#27ae60", category: "conversion-tools", desc: "Pull data directly from PDFs into Excel spreadsheets." },
+                { name: "PDF to PDF/A", id: "pdf-to-pdfa", url: "#", icon: "fas fa-archive", color: "#34495e", category: "conversion-tools", desc: "Convert your PDF to PDF/A for long-term archiving." },
+                { name: "PDF to PNG", id: "pdf-to-png", url: "#", icon: "fas fa-file-image", color: "#f1c40f", category: "conversion-tools", desc: "Convert PDF to high-quality PNG images." },
+                { name: "PNG to PDF", id: "png-to-pdf", url: "#", icon: "fas fa-file-image", color: "#f1c40f", category: "conversion-tools", desc: "Turn PNG images into a single PDF file." },
+                { name: "PDF to TXT", id: "pdf-to-txt", url: "#", icon: "fas fa-file-alt", color: "#7f8c8d", category: "conversion-tools", desc: "Extract text from your PDF files to plain text." },
+                { name: "TXT to PDF", id: "txt-to-pdf", url: "#", icon: "fas fa-file-alt", color: "#7f8c8d", category: "conversion-tools", desc: "Convert text files to PDF documents." },
+                { name: "PDF to HTML", id: "pdf-to-html", url: "#", icon: "fas fa-code", color: "#f39c12", category: "conversion-tools", desc: "Convert your PDFs to standard HTML files." },
+                { name: "Edit PDF", id: "edit-pdf", url: "#", icon: "fas fa-pencil-alt", color: "#9b59b6", category: "edit-tools", desc: "Add text, images, shapes or freehand annotations." },
+                { name: "Rotate PDF", id: "rotate-pdf", url: "#", icon: "fas fa-sync-alt", color: "#9b59b6", category: "edit-tools", desc: "Rotate all or specific pages in your PDF document." },
+                { name: "Add page numbers", id: "number-pdf", url: "#", icon: "fas fa-sort-numeric-down", color: "#9b59b6", category: "edit-tools", desc: "Easily insert page numbers into your PDF files." },
+                { name: "Add watermark", id: "watermark-pdf", url: "#", icon: "fas fa-tint", color: "#9b59b6", category: "edit-tools", desc: "Stamp an image or text over your PDF in seconds." },
+                { name: "Crop PDF", id: "crop-pdf", url: "#", icon: "fas fa-crop-alt", color: "#9b59b6", category: "edit-tools", desc: "Select and crop areas of your PDF pages." },
+                { name: "Unlock PDF", id: "unlock-pdf", url: "#", icon: "fas fa-unlock", color: "#3498db", category: "edit-tools", desc: "Remove passwords and restrictions from your PDF." },
+                { name: "Protect PDF", id: "protect-pdf", url: "#", icon: "fas fa-shield-alt", color: "#3498db", category: "edit-tools", desc: "Add a password to protect your PDF files from access." },
+                { name: "Sign PDF", id: "sign-pdf", url: "#", icon: "fas fa-signature", color: "#2980b9", category: "edit-tools", desc: "Create your signature and sign your PDF files." },
+                { name: "Redact PDF", id: "redact-pdf", url: "#", icon: "fas fa-marker", color: "#2c3e50", category: "edit-tools", desc: "Permanently black out sensitive text in your PDF." },
+                { name: "Scan to PDF", id: "scan-to-pdf", url: "#", icon: "fas fa-camera", color: "#3498db", category: "edit-tools", desc: "Scan documents directly to PDF from your device." },
+                { name: "Compare PDF", id: "compare-pdf", url: "#", icon: "fas fa-copy", color: "#2c3e50", category: "edit-tools", desc: "Compare two PDF files to see the differences." },
+            ];
+
+            const bubblesContainer = document.getElementById('bubbles');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const searchBar = document.getElementById('search-bar');
+            const toolsDropdown = document.getElementById('tools-dropdown'); // This is the desktop dropdown
+            const toolsListContainer = document.getElementById('tools-list-container'); // This is for the desktop dropdown
+            
+            function createBubbles() {
+                bubblesContainer.innerHTML = '';
+                const count = 70;
+                for (let i = 0; i < count; i++) {
+                    let bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    const size = Math.random() * 80 + 20 + 'px';
+                    bubble.style.width = size;
+                    bubble.style.height = size;
+                    bubble.style.left = Math.random() * 100 + 'vw';
+                    bubble.style.animationDuration = Math.random() * 15 + 20 + 's';
+                    bubble.style.animationDelay = Math.random() * 10 + 's';
+                    bubblesContainer.appendChild(bubble);
+                }
+            }
+
+            function renderAllContent() {
+                toolsListContainer.innerHTML = ''; // Clear existing list for desktop dropdown
+                document.getElementById('organize-tools').innerHTML = '';
+                document.getElementById('conversion-tools').innerHTML = '';
+                document.getElementById('edit-tools').innerHTML = '';
+
+                const sortedTools = [...allTools].sort((a, b) => a.name.localeCompare(b.name));
+
+                // Populate the desktop dropdown list
+                toolsListContainer.innerHTML = sortedTools.map(tool => 
+                    `<li><a href="${tool.url}">${tool.name}</a></li>`
+                ).join('');
+
+                // Render tool cards in their respective sections
+                allTools.forEach(tool => {
+                    const grid = document.getElementById(tool.category);
+                    if(grid) {
+                        const toolCardHTML = `
+                            <a href="${tool.url}" class="tool-card" data-name="${tool.name.toLowerCase()}">
+                                <div class="tool-header">
+                                    <div class="tool-icon" style="background:${tool.color};"><i class="${tool.icon}"></i></div>
+                                    <h3 class="tool-name">${tool.name}</h3>
+                                </div>
+                                <div class="tool-desc">${tool.desc}</div>
+                                <div class="tool-footer">
+                                    <span class="tool-btn">Use Tool <i class="fas fa-arrow-right"></i></span>
+                                </div>
+                            </a>`;
+                        grid.innerHTML += toolCardHTML;
+                    }
+                });
+            }
+            
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.querySelector('i').className = 'fas fa-sun';
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    darkModeToggle.querySelector('i').className = 'fas fa-moon';
+                }
+            }
+            
+            function filterTools() {
+                const query = searchBar.value.toLowerCase();
+                document.querySelectorAll('.tool-card').forEach(card => {
+                    card.style.display = card.dataset.name.includes(query) ? 'flex' : 'none';
+                });
+                document.querySelectorAll('.category-title').forEach(title => {
+                    const grid = title.nextElementSibling;
+                    const visibleCardsInGrid = grid.querySelectorAll('.tool-card[style*="display: flex"]').length;
+                    title.style.display = visibleCardsInGrid > 0 ? 'inline-block' : 'none';
+                });
+            }
+
+            // --- Initialize ---
+            createBubbles();
+            renderAllContent();
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            // --- Event Listeners ---
+            darkModeToggle.addEventListener('click', () => {
+                const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+
+            // Toggle for mobile navigation
+            navToggle.addEventListener('click', () => {
+                const isOpen = document.body.classList.toggle('nav-open');
+                navToggle.querySelector('i').className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+            });
+            
+            searchBar.addEventListener('input', filterTools);
+
+            // Desktop dropdown functionality
+            let hideTimeout;
+            toolsDropdown.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                toolsDropdown.querySelector('.dropdown-menu').style.display = 'block';
+            });
+            toolsDropdown.addEventListener('mouseleave', () => {
+                hideTimeout = setTimeout(() => {
+                    toolsDropdown.querySelector('.dropdown-menu').style.display = 'none';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
